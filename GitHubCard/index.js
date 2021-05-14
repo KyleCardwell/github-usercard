@@ -37,7 +37,7 @@ axios.get('https://api.github.com/users/KyleCardwell')
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = ["tetondan", "dustinmyers", "justsml", "luishrd", "bigknell"];
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -61,15 +61,17 @@ const followersArray = [];
 
 function idCardMaker(gitHubInfo) {
 
+  // assign variables info from passed-in object
   const gitHubAvatar = gitHubInfo.avatar_url;
   const gitHubName = gitHubInfo.name;
   const gitHubLogin = gitHubInfo.login
   const gitHubLoc = gitHubInfo.location;
-  const gitHubURL = gitHubInfo.url;
+  const gitHubURL = gitHubInfo.html_url;
   const gitHubFollowers = gitHubInfo.followers;
   const gitHubFollowing = gitHubInfo.following;
   const gitHubBio = gitHubInfo.bio;
 
+  // create html elements
   const cardDiv = document.createElement('div');
   const userImg = document.createElement('img');
   const infoDiv = document.createElement('div');
@@ -82,12 +84,14 @@ function idCardMaker(gitHubInfo) {
   const userFollowing = document.createElement('p');
   const userBio = document.createElement('p');
 
+  // add classes to a few elements
   cardDiv.classList.add('card');
   // userImg.classList.add('card img');
   infoDiv.classList.add('card-info');
   fullName.classList.add('name');
   userLogin.classList.add('username');
 
+  // assign content to variables
   userImg.src = gitHubAvatar;
   fullName.textContent = gitHubName;
   userLogin.textContent = gitHubLogin;
@@ -99,6 +103,7 @@ function idCardMaker(gitHubInfo) {
   userFollowing.textContent = `Following: ${gitHubFollowing}`;
   userBio.textContent = gitHubBio;
 
+  // organize html elements
   cardDiv.appendChild(userImg);
   cardDiv.appendChild(infoDiv);
   infoDiv.appendChild(fullName);
@@ -114,9 +119,18 @@ function idCardMaker(gitHubInfo) {
 
 }
 
+followersArray.forEach(name => {
+  axios.get(`https://api.github.com/users/${name}`)
+  .then(response => {
+    const newIdCard = idCardMaker(response.data);
+    console.log(newIdCard);
+    const cardsGroup = document.querySelector('.cards')
+    cardsGroup.appendChild(newIdCard);
+  })
+})
+
 /*
   List of LS Instructors Github username's:
-    KyleCardwell
     tetondan
     dustinmyers
     justsml
