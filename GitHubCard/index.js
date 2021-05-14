@@ -65,6 +65,19 @@ function idCardMaker(gitHubInfo) {
   const gitHubFollowers = gitHubInfo.followers;
   const gitHubFollowing = gitHubInfo.following;
   const gitHubBio = gitHubInfo.bio;
+
+  const cardDiv = document.createElement('div');
+  const userImg = document.createElement('img');
+  const infoDiv = document.createElement('div');
+  const fullName = document.createElement('h3');
+  const userLogin = document.createElement('p');
+  const userLoc = document.createElement('p');
+  const userProfile = document.createElement('p');
+  const profileHref = document.createElement('a');
+  const userFollowers = document.createElement('p');
+  const userFollowing = document.createElement('p');
+  const userBio = document.createElement('p');
+
 }
 
 /*
