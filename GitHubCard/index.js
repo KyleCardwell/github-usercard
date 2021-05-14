@@ -3,7 +3,16 @@
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
+import axios from 'axios';
 
+axios.get('https://api.github.com/users/KyleCardwell')
+  .then(response => {
+    const newIdCard = idCardMaker(response.data);
+    console.log(newIdCard);
+    const cardsGroup = document.querySelector('.cards')
+    cardsGroup.appendChild(newIdCard);
+  })
+  // .catch()
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
@@ -28,7 +37,7 @@
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = ["tetondan", "dustinmyers", "justsml", "luishrd", "bigknell"];
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -49,6 +58,76 @@ const followersArray = [];
       </div>
     </div>
 */
+
+function idCardMaker(gitHubInfo) {
+
+  // assign variables info from passed-in object
+  const gitHubAvatar = gitHubInfo.avatar_url;
+  const gitHubName = gitHubInfo.name;
+  const gitHubLogin = gitHubInfo.login
+  const gitHubLoc = gitHubInfo.location;
+  const gitHubURL = gitHubInfo.html_url;
+  const gitHubFollowers = gitHubInfo.followers;
+  const gitHubFollowing = gitHubInfo.following;
+  const gitHubBio = gitHubInfo.bio;
+
+  // create html elements
+  const cardDiv = document.createElement('div');
+  const userImg = document.createElement('img');
+  const infoDiv = document.createElement('div');
+  const fullName = document.createElement('h3');
+  const userLogin = document.createElement('p');
+  const userLoc = document.createElement('p');
+  const userProfile = document.createElement('p');
+  const profileHref = document.createElement('a');
+  const userFollowers = document.createElement('p');
+  const userFollowing = document.createElement('p');
+  const userBio = document.createElement('p');
+
+  // add classes to a few elements
+  cardDiv.classList.add('card');
+  // userImg.classList.add('card img');
+  infoDiv.classList.add('card-info');
+  fullName.classList.add('name');
+  userLogin.classList.add('username');
+
+  // assign content to variables
+  userImg.src = gitHubAvatar;
+  fullName.textContent = gitHubName;
+  userLogin.textContent = gitHubLogin;
+  userLoc.textContent = gitHubLoc;
+  userProfile.textContent = 'Profile: ';
+  profileHref.href = gitHubURL;
+  profileHref.textContent = gitHubURL;
+  userFollowers.textContent = `Followers: ${gitHubFollowers}`;
+  userFollowing.textContent = `Following: ${gitHubFollowing}`;
+  userBio.textContent = gitHubBio;
+
+  // organize html elements
+  cardDiv.appendChild(userImg);
+  cardDiv.appendChild(infoDiv);
+  infoDiv.appendChild(fullName);
+  infoDiv.appendChild(userLogin);
+  infoDiv.appendChild(userLoc);
+  infoDiv.appendChild(userProfile);
+  userProfile.appendChild(profileHref);
+  infoDiv.appendChild(userFollowers);
+  infoDiv.appendChild(userFollowing);
+  infoDiv.appendChild(userBio);
+
+  return cardDiv;
+
+}
+
+followersArray.forEach(name => {
+  axios.get(`https://api.github.com/users/${name}`)
+  .then(response => {
+    const newIdCard = idCardMaker(response.data);
+    console.log(newIdCard);
+    const cardsGroup = document.querySelector('.cards')
+    cardsGroup.appendChild(newIdCard);
+  })
+})
 
 /*
   List of LS Instructors Github username's:
